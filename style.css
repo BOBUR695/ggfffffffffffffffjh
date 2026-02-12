@@ -1,58 +1,75 @@
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+}
+
 body {
   margin: 0;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f2c48d;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #bdbdbd, #f4f3f3);
 }
 
 .calculator {
   width: 320px;
+  height: 640px;
   background: #111;
-  border-radius: 30px;
-  padding: 20px;
+  border-radius: 36px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .display {
-  height: 80px;
-  color: white;
-  font-size: 48px;
-  text-align: right;
-  padding: 10px;
+  flex: 1;
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 56px;
+  font-weight: 300;
+  padding-bottom: 20px;
   overflow: hidden;
 }
 
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-gap: 14px;
 }
 
 button {
-  height: 60px;
+  height: 64px;
   border: none;
   border-radius: 50%;
-  font-size: 22px;
+  font-size: 26px;
   cursor: pointer;
 }
 
-.gray {
+button:active {
+  filter: brightness(1.2);
+}
+
+.btn-gray {
   background: #a5a5a5;
+  color: #000;
 }
 
-.dark {
+.btn-dark {
   background: #333;
-  color: white;
+  color: #fff;
 }
 
-.orange {
+.btn-orange {
   background: #ff9f0a;
-  color: white;
+  color: #fff;
 }
 
 .zero {
   grid-column: span 2;
-  border-radius: 30px;
+  border-radius: 32px;
+  text-align: left;
+  padding-left: 26px;
 }
