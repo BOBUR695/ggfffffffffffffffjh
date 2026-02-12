@@ -1,63 +1,81 @@
-let display = document.getElementById("display");
-let current = "";
-let operator = "";
-let previous = "";
+const display = document.getElementById('display');
+const buttons = document.querySelectorAll('button');
+
+let currentExpression = '';
+let shouldResetDisplay = false;
 
 function updateDisplay(value) {
-  display.textContent = value;
+  display.textContent = value || '0';
 }
 
-function addNumber(num) {
-  current += num;
-  updateDisplay(current);
+function clearCalculator() {
+  currentExpression = '';
+  updateDisplay('0');
 }
 
-function addDot() {
-  if (!current.includes(".")) {
-    current += ".";
-    updateDisplay(current);
+function appendValue(value) {
+  if (shouldResetDisplay) {
+    currentExpression = '';
+    shouldResetDisplay = false;
+  }
+
+  currentExpression += value;
+  updateDisplay(currentExpression);
+}
+
+function calculateResult() {
+  try {
+    const result = eval(currentExpression);
+    currentExpression = result.toString();
+    updateDisplay(currentExpression);
+    shouldResetDisplay = true;
+  } catch {
+    updateDisplay('Error');
+    currentExpression = '';
   }
 }
 
-function setOperator(op) {
-  if (current === "") return;
-  operator = op;
-  previous = current;
-  current = "";
-}
-
-function calculate() {
-  if (current === "" || previous === "") return;
-
-  let result;
-  let a = parseFloat(previous);
-  let b = parseFloat(current);
-
-  if (operator === "+") result = a + b;
-  if (operator === "-") result = a - b;
-  if (operator === "*") result = a * b;
-  if (operator === "/") result = a / b;
-
-  updateDisplay(result);
-  current = result.toString();
-  previous = "";
-}
-
-function clearAll() {
-  current = "";
-  previous = "";
-  operator = "";
-  updateDisplay("0");
-}
 
 function toggleSign() {
-  if (current === "") return;
-  current = (parseFloat(current) * -1).toString();
-  updateDisplay(current);
+  if (!currentExpression) return;
+
+  currentExpression = (eval(currentExpression) * -1).toString();
+  updateDisplay(currentExpression);
 }
 
-function percent() {
-  if (current === "") return;
-  current = (parseFloat(current) / 100).toString();
-  updateDisplay(current);
+
+function applyPercent() {
+  if (!currentExpression) return;
+
+  currentExpression = (eval(currentExpression) / 100).toString();
+  updateDisplay(currentExpression);
 }
+
+function handleButtonClick(value) {
+  switch (value) {
+    case 'AC':
+      clearCalculator();
+      break;
+
+    case '=':
+      calculateResult();
+      break;
+
+    case '+/-':
+      toggleSign();
+      break;
+
+    case '%':
+      applyPercent();
+      break;
+
+    default:
+      appendValue(value);
+  }
+}
+
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    handleButtonClick(button.dataset.value);
+  });
+});
